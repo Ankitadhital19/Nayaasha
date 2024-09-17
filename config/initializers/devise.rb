@@ -26,16 +26,16 @@ Devise.setup do |config|
   # with default "from" parameter.
   config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
 
-  # Devise.setup do |config|
+    # Devise.setup do |config|
     # ==> JWT configuration
     config.jwt do |jwt|
       jwt.secret = Rails.application.credentials.devise_jwt_secret_key || ENV["DEVISE_JWT_SECRET_KEY"]
       jwt.dispatch_requests = [
         [ "POST", %r{^/graphql$} ]
       ]
-      jwt.revocation_requests = [
-        [ "DELETE", %r{^/graphql$} ]
-      ]
+      # jwt.revocation_requests = [
+      #   [ "DELETE", %r{^/graphql$} ]
+      # ]
       jwt.expiration_time = 1.day.to_i
     end
   # end

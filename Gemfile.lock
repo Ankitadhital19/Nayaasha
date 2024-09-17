@@ -71,6 +71,8 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+    acts_as_tenant (1.0.1)
+      rails (>= 6.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
@@ -184,6 +186,7 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.8)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -191,6 +194,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.7)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -343,6 +348,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  acts_as_tenant (~> 1.0)
   bootsnap
   brakeman
   capybara
@@ -353,11 +359,13 @@ DEPENDENCIES
   graphql (~> 2.3)
   importmap-rails
   jbuilder
+  pg (~> 1.1)
   puma (>= 5.0)
+  rack-cors (~> 1.1, >= 1.1.1)
   rails (~> 7.2.1)
   rubocop-rails-omakase
   selenium-webdriver
-  sprockets-rails
+  sprockets-rails (~> 3.5)
   sqlite3 (>= 1.4)
   stimulus-rails
   turbo-rails

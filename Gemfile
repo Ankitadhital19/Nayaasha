@@ -3,9 +3,8 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 1.4"
+# gem "sqlite3", ">= 1.4"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -62,3 +61,11 @@ gem "graphql", "~> 2.3"
 gem "graphiql-rails", group: :development
 
 gem "devise-jwt", "~> 0.12.1"
+
+gem "acts_as_tenant", "~> 1.0"
+
+gem "rack-cors", "~> 1.1", ">= 1.1.1"
+
+gem "sprockets-rails", "~> 3.5"
+
+gem "pg", "~> 1.1"
