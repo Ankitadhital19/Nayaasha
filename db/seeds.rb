@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+[ "CHILDRENS HOME", "FUTURE HOME NEPAL", "BAL SEWA GRIHA", "MERCY CHILDREN HOME" ].each do |orpName|
+  Orphanage.create(name: orpName)
+end
