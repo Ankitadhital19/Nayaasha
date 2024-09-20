@@ -1,5 +1,5 @@
 module UserAuth
-  class SessionSevice
+  class SessionService
     attr_reader :params
     attr_accessor :success, :errors, :token, :user
 
@@ -16,6 +16,7 @@ module UserAuth
 
     def execute_user_sign_out(current_user)
       handle_user_sign_out(current_user)
+      self
     end
 
     def success?
@@ -32,9 +33,8 @@ module UserAuth
         @user = User.find_for_authentication(email: params[:email])
         if @user&.valid_password?(params[:password])
           @token = @user.generate_jwt
-          @user = @user
           @success = true
-          @errors = false
+          @errors = []
         else
           @success = false
           @errors << "Invalid email or password"

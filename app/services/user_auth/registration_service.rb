@@ -3,27 +3,29 @@ module UserAuth
     attr_reader :params
     attr_accessor :success, :errors
 
-    def initilize(params = {})
-    @params = params
-    @success = false
-    @errors = []
+    def initialize(params = {})
+      @params = params
+      @success = false
+      @errors = []
     end
 
     def execute
       handle_user_registration
+      self
     end
-    def success
+
+    def success?
       @success || @errors.empty?
     end
 
     def errors
-      @errors.join(",")
+      @errors.join(", ")
     end
 
     private
 
     def handle_user_registration
-      begin
+      ActiveRecord::Base.transaction do
         if organization.present?
           ActsAsTenant.without_tenant do
             @user = User.new(sign_up_params)
@@ -33,8 +35,8 @@ module UserAuth
             end
           end
         else
-          @success = false
-          @errors << "Organization not found!"
+        @success = false
+        @errors << "Organzation not found!"
         end
       end
 
@@ -43,8 +45,9 @@ module UserAuth
       @errors << err.message
     end
 
+
     def organization
-      organization ||= Organization.find_by(id: params[:organization_id])
+      @organization ||= Organization.find_by(id: params[:organization_id])
     end
 
     def sign_up_params

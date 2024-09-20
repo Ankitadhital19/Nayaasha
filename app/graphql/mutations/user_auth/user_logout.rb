@@ -5,8 +5,7 @@ module Mutations
       field :errors, [ String ], null: true
 
       def resolve
-        begin
-          user_session_service = ::UserAuth::SessionSevice.new.execute_user_sign_out(context[:current_user])
+          user_session_service = ::UserAuth::SessionService.new.execute_user_sign_out(context[:current_user])
 
           if user_session_service.success?
             {
@@ -19,11 +18,10 @@ module Mutations
               errors: [ user_session_service.errors ]
             }
           end
-        end
       rescue StandardError, GraphQL::ExecutionError => err
         {
-          message:"failed to logout",
-          errors: [err.message]
+          message: "failed to logout",
+          errors: [ err.message ]
         }
       end
     end

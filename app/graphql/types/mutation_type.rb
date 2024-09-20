@@ -3,6 +3,8 @@
 module Types
   class MutationType < Types::BaseObject
     field :create_user, description: "Mutation for creating user", mutation: Mutations::UserAuth::CreateUser
+    field :user_login, description: "Mutation for user login", mutation: Mutations::UserAuth::UserLogin
+    field :user_logout, description: "Mutation for user logout", mutation: Mutations::UserAuth::UserLogout
     # field :create_orphanage, description: "Mutation for creating asset", mutation: Mutations::Orphanage::CreateOrphanage
   end
 end
