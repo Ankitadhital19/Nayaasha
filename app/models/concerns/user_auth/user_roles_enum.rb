@@ -2,7 +2,7 @@ module UserAuth
   module UserRolesEnum
     extend ActiveSupport::Concern
 
-     ROLES = {
+    ROLES = {
       superadmin: "superadmin",
       admin: "admin",
       member: "member"

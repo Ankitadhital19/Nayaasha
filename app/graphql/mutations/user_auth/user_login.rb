@@ -3,17 +3,16 @@ module Mutations
     class UserLogin < BaseMutation
       argument :session_info, Types::InputObjects::UserSessionInputType, required: true
 
+      field :user, Types::UserAuth::UserAuthType, null: true
       field :errors, [ String ], null: false
       field :token, String, null: true
-      field :message, String, null: true
 
-      def resolve(login_info: {})
-        begin
-          user_session_service = ::UserAuth::SessionSevice.new(session_info.to_h).execute_user_sign_in
+      def resolve(session_info: {})
+          user_session_service = ::UserAuth::SessionService.new(session_info.to_h).execute_user_sign_in
 
           if user_session_service.success?
             {
-              message: user_session_service.user,
+              user: user_session_service.user,
               token: user_session_service.token,
               errors: []
             }
@@ -22,7 +21,6 @@ module Mutations
               errors: [ user_session_service.errors ]
             }
           end
-        end
       rescue StandardError, GraphQL::Execution::Errors => err
         {
           errors: [ err.message ]
