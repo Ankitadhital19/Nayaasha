@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_19_134421) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_23_042856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_19_134421) do
     t.index ["user_id"], name: "index_orphanages_on_user_id"
   end
 
+  create_table "orphans", force: :cascade do |t|
+    t.string "name"
+    t.integer "age"
+    t.string "gender"
+    t.bigint "orphanage_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["orphanage_id"], name: "index_orphans_on_orphanage_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -47,4 +57,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_19_134421) do
   end
 
   add_foreign_key "orphanages", "users"
+  add_foreign_key "orphans", "orphanages"
 end
