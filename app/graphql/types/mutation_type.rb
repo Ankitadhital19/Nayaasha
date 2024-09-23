@@ -8,5 +8,7 @@ module Types
     field :create_orphanage, description: "Mutation for creating asset", mutation: Mutations::Orphanage::CreateOrphanage
     field :delete_orphanage, description: "Mutation for deleting asset", mutation: Mutations::Orphanage::DeleteOrphanage
     field :edit_orphanage, description: "Mutation for editing asset", mutation: Mutations::Orphanage::EditOrphanage
+    field :orphanage_login, description: "Mutation for orphanage login", mutation: Mutations::Orphanage::OrphanageLogin
+    field :orphanage_logout, description: "Mutation for orphanage logout", mutation: Mutations::Orphanage::OrphanageLogout
   end
 end
