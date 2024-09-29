@@ -1,4 +1,4 @@
-module Orphan
+module Orphans
   class OrphanService
     attr_reader :params
     attr_accessor :success, :errors, :orphan
@@ -41,23 +41,37 @@ module Orphan
     private
 
     def handle_orphan_creation
-      if user.present? && user.admin?
+      # Find the orphanage by ID
+      orphanage = Orphanage.find_by(id: params[:orphanage_id])
+
+      # Check if the orphanage was found
+      if orphanage.nil?
+        @errors << "Orphanage not found."
+        return
+      end
+
+      # Check if the orphanage is an admin
+      if orphanage.admin?
+        # Create a new orphan with the provided parameters and link to the orphanage
         @orphan = Orphan.new(orphan_params.merge(orphanage_id: orphanage.id))
-         if @orphan.save!
+
+        # Attempt to save the orphan
+        if @orphan.save
           @success = true
-          @errors = []
-         else
+          @errors = []  # Reset errors on success
+        else
           @success = false
-          @errors = @orphan.errors.full_messages
-         end
+          @errors = @orphan.errors.full_messages  # Capture validation errors
+        end
       else
         @success = false
-        @errors << "User must be an admin to create an orphanage."
+        @errors << "The orphanage must be an admin to create an orphan."
       end
     rescue ActiveRecord::Rollback, ActiveRecord::RecordInvalid => err
       @success = false
-      @errors << err.message
+      @errors << err.message  # Capture any exceptions during save
     end
+
 
     # def handle_orphanage_deletion
     #   @orphanage = Orphanage.find_by!(id: params[:id])
@@ -112,8 +126,7 @@ module Orphan
     # end
 
     def user
-      current_user = params[:current_user]
-      @user ||= current_user
+      @user ||=  params[:current_user]
     end
 
     def orphanage_params

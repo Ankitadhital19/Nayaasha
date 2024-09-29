@@ -19,7 +19,7 @@ module Mutations
             else
               {
                 message: "failed to delete",
-                errors: [ asset_service.errors ]
+                errors: [ orphanage_service.errors ]
               }
             end
           end
