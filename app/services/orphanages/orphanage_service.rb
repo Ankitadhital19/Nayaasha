@@ -118,7 +118,7 @@
       end
 
       def orphanage_params
-        ActionController::Parameters.new(params).permit(:name, :location)
+        ActionController::Parameters.new(params).permit(:name, :location, :roles)
       end
     end
   end
