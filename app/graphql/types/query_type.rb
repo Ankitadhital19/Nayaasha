@@ -22,5 +22,6 @@ module Types
     # They will be entry points for queries on your schema.
 
     field :get_orphanages, description: "Resolvers for getting orphanages", resolver: Resolvers::Orphanages::GetOrphanage
+    field :get_orphans, description: "Resolver for get orphan", resolver: Resolvers::Orphans::GetOrphans
   end
 end

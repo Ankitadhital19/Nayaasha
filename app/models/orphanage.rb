@@ -3,7 +3,7 @@ class Orphanage < ApplicationRecord
   has_many :orphans, dependent: :destroy
   belongs_to :user
 
-  def admin?
-    is_admin 
-  end
+  # def admin?
+  #   is_admin 
+  # end
 end

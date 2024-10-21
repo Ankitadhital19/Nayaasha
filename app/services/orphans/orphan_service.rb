@@ -1,7 +1,7 @@
 module Orphans
   class OrphanService
     attr_reader :params
-    attr_accessor :success, :errors, :orphan
+    attr_accessor :success, :errors, :orphan, :orphans
 
     def initialize(params = {})
       # @user = user
@@ -15,20 +15,20 @@ module Orphans
       self
     end
 
-    # def execute_delete_orphan
-    #   handle_orphan_deletion
-    #   self
-    # end
+    def execute_delete_orphan
+      handle_orphan_deletion
+      self
+    end
 
-    # def execute_edit_orphan
-    #   handle_orphan_edit
-    #   self
-    # end
+    def execute_edit_orphan
+      handle_orphan_edit
+      self
+    end
 
-    # def excecute_get_orphan
-    #   handle_get_orphans
-    #   self
-    # end
+    def excecute_get_orphans
+      handle_get_orphans
+      self
+    end
 
     def success?
       @success || @errors.empty?
@@ -51,11 +51,9 @@ module Orphans
       end
 
       # Check if the orphanage is an admin
-      if orphanage.admin?
-        # Create a new orphan with the provided parameters and link to the orphanage
-        @orphan = Orphan.new(orphan_params.merge(orphanage_id: orphanage.id))
+      if user.present? && orphanage.admin?
+        @orphan = orphanage.orphans.build(orphan_params)
 
-        # Attempt to save the orphan
         if @orphan.save
           @success = true
           @errors = []  # Reset errors on success
@@ -69,67 +67,71 @@ module Orphans
       end
     rescue ActiveRecord::Rollback, ActiveRecord::RecordInvalid => err
       @success = false
-      @errors << err.message  # Capture any exceptions during save
+      @errors << err.message
     end
 
 
-    # def handle_orphanage_deletion
-    #   @orphanage = Orphanage.find_by!(id: params[:id])
-    #   if @orphanage && user.present? && user.superadmin?
-    #     if @orphanage.destroy
-    #       @success = false
-    #       @errors = @orphanage.errors.full_messages
-    #     end
-    #   else
-    #     @success = false
-    #     @errors << "You are not authorized to perform this action"
-    #   end
-    # rescue ActiveRecord::RecordNotDestroyed => err
-    #   @success = false
-    #   @errors << err.message
-    # end
+    def handle_orphan_deletion
+      @orphan = Orphan.find_by!(id: params[:id])
 
-    # def handle_orphanage_edit
-    #   @orphanage = Orphanage.find_by!(id: params[:id])
-    #   if user.present? && user.superadmin?
-    #    if @orphanage.update!(orphanage_params.except(:orphanage_id))
-    #     @success = true
-    #     @errors = []
-    #    else
-    #     @success = false
-    #     @errors = @orphanage.errors.full_messages
-    #    end
-    #   else
-    #     @success = false
-    #     @errors << "You are not authorized to perform this action"
-    #   end
-    # rescue ActiveRecord::RecordInvalid => err
-    #   @success = false
-    #   @errors << err.message
-    # end
+      orphanage = Orphanage.find_by(id: @orphan.orphanage_id)
 
-    # def handle_get_orphanages
-    #   begin
-    #     @orphanage = Orphanage.order(created_at: :DESC)
-    #     if @orphanage.present?
-    #       @success = true
-    #       @errors = []
-    #     else
-    #       @success = flase
-    #       @errors = [ "Orphanages not found" ]
-    #     end
-    #   end
+      if @orphan && orphanage.present? && orphanage.admin?
+        if @orphan.destroy
+          @success = true
+          @errors = []
+        else
+          @success = false
+          @errors = @orphan.errors.full_messages
+        end
+      else
+        @success = false
+        @errors << "You are not authorized to perform this action."
+      end
+    rescue ActiveRecord::RecordNotDestroyed => err
+      @success = false
+      @errors << err.message
+    end
 
-    # rescue ActiveRecord::ActiveRecordError => err
-    #   @success = false
-    #   @errors = [ err.message ]
-    # end
+
+    def handle_orphan_edit
+      @orphan = Orphan.find_by!(id: params[:id])
+      orphanage = Orphanage.find_by(id: @orphan.orphanage_id)  # Retrieve orphanage
+
+      if orphanage.present? && orphanage.admin?  # Check if the orphanage exists and is admin
+        if @orphan.update(orphan_params.except(:orphan_id))
+          @success = true
+          @errors = []
+        else
+          @errors = @orphan.errors.full_messages
+        end
+      else
+        @errors << "You are not authorized to perform this action."
+      end
+    rescue ActiveRecord::RecordInvalid => err
+      @errors << err.message
+    end
+
+    def handle_get_orphans
+      @orphans = Orphan.order(created_at: :desc)
+      if @orphans.present?
+        @success = true
+        @errors = []
+      else
+        @success = false
+        @errors << "No orphans found."
+      end
+    rescue ActiveRecord::ActiveRecordError => err
+      @success = false
+      @errors << err.message
+      nil
+    end
 
     def user
       @user ||=  params[:current_user]
     end
 
-    def orphanage_params
+    def orphan_params
       ActionController::Parameters.new(params).permit(:name, :age, :gender)
     end
   end
