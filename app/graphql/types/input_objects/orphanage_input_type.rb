@@ -3,7 +3,7 @@ module Types
     class OrphanageInputType < Types::BaseInputObject
       argument :name, String, required: true
       argument :location, String, required: true
-      argument :roles, Types::Enums::OrphanageRolesEnum, required: true
+      argument :roles, Types::Enums::UserRolesEnum, required: true
     end
   end
 end
