@@ -13,5 +13,8 @@ module Types
     field :create_orphan, description: "Mutation for creating orphan", mutation: Mutations::Orphan::CreateOrphan
     field :edit_orphan, description: "Mutation for creating orphan", mutation: Mutations::Orphan::EditOrphan
     field :delete_orphan, description: "Mutation for deleting orphan", mutation: Mutations::Orphan::DeleteOrphan
+    field :register_adaptar, mutation: Mutations::Adaptar::RegisterAdaptar
+    field :adaptar_login, description: "Mutation for adaptar login", mutation: Mutations::Adaptar::AdaptarLogin
+    field :adaptar_logout, description: "Mutation for adaptar logout", mutation: Mutations::Adaptar::AdaptarLogout
   end
 end

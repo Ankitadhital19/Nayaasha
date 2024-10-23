@@ -23,5 +23,6 @@ module Types
 
     field :get_orphanages, description: "Resolvers for getting orphanages", resolver: Resolvers::Orphanages::GetOrphanage
     field :get_orphans, description: "Resolver for get orphan", resolver: Resolvers::Orphans::GetOrphans
+    field :get_adaptars, description: "Resolver for get adaptar", resolver: Resolvers::Adaptar::GetAdaptars
   end
 end
