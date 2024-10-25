@@ -68,4 +68,4 @@ gem "rack-cors", "~> 1.1", ">= 1.1.1"
 
 gem "sprockets-rails", "~> 3.5"
 
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.5"
