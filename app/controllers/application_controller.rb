@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
     set_current_tenant_through_filter
     before_action :handle_current_tenant
 
+    skip_before_action :verify_authenticity_token
+
     private
 
     def current_user
